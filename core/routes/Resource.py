@@ -1,6 +1,5 @@
 # -*- coding:UTF8 -*-
 
-from Resources import Resources
 from ActionSet import ActionSet
 
 class Resource(object):
@@ -17,6 +16,7 @@ class Resource(object):
         self.__route_map = []
         
     def resources(self, name, without = [], only = [], controller_string = None):
+        from Resources import Resources
         r = Resources(name, without, only, controller_string)
         self.__route_map.append(r)
         return r
@@ -26,6 +26,9 @@ class Resource(object):
         self.__route_map.append(r)
         return r
 
+    def member(self):
+        return self.__member
+
     def __iter__(self):
         methods = {
             'GET': 'show',
@@ -33,12 +36,12 @@ class Resource(object):
             'PUT': 'update',
             'DELETE': 'destroy'
         }
-        yield (self.__name, [], None, methods)
-        yield (self.__name + '/edit', [], None, {'GET' : 'edit' })
-        yield (self.__name + '/new', [], None, {'GET' : 'new' })
+        yield (self.__name, [], self.__controller_string, methods)
+        yield (self.__name + '/edit', [], self.__controller_string, {'GET' : 'edit' })
+        yield (self.__name + '/new', [], self.__controller_string, {'GET' : 'new' })
         for item in self.__member:
             for route, variables, controller, methods in item:
-                yield ( self.__name + '/' + route, variables, controller, methods )
+                yield ( self.__name + '/' + route, variables, self.__controller_string, methods )
         for item in self.__route_map:
             for route, variables, controller, methods in item:
                 yield ( self.__name + '/' + route, variables, controller, methods )
