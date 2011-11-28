@@ -1,11 +1,11 @@
-# -*- conding: UTF8 -*-
+# -*- coding: UTF8 -*-
 
 from tornado.web import RequestHandler
 
 class BaseHandler(RequestHandler):
 
     def __init__(self, controller, methods, param_names):
-        self.__conroller = controller
+        self.__controller = controller
         self.__methods = methods
         self.__param_names = param_names
     

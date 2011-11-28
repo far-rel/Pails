@@ -3,16 +3,20 @@
 class ActionSet(object):
 
     def __init__(self):
-        self.actions = []
+        self.__actions = []
     
     def get(self, name):
-        self.actions.append((name, 'GET'))
+        self.__actions.append((name, 'GET'))
         
     def post(self, name):
-        self.actions.append((name, 'POST'))
+        self.__actions.append((name, 'POST'))
         
     def put(self, name):
-        self.actions.append((name, 'PUT'))
+        self.__actions.append((name, 'PUT'))
     
     def delete(self, name):
-        self.actions.append((name, 'DELETE'))
+        self.__actions.append((name, 'DELETE'))
+
+    def __iter__(self):
+        for name, method in self.__actions:
+            yield ( name, [], None, { method : name } )
