@@ -5,7 +5,7 @@ from ActionSet import ActionSet
 
 class Resources(object):
 
-    def __init__(self, name, without = [], only = [], controller_string = None):
+    def __init__(self, name, without = None, only = None, controller_string = None):
         self.__name = name
         self.__without = without
         self.__only = only
@@ -36,11 +36,12 @@ class Resources(object):
 
     def __include(self, name):
         if not self.__only is None:
-            return (name in self.__only)
+            return (name == self.__only or name in self.__only)
         elif not self.__without is None:
-            return (not name in self.__without)
+            return (name != self.__without or not name in self.__without)
         else:
             return True
+
 
     def __iter__(self):
         methods = { }
