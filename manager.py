@@ -67,5 +67,4 @@ class PailsManager(object):
 
 manager = PailsManager()
 manager.register('run',Run)
-manager.register('start',Run)
 manager.register('routes', Routes)
