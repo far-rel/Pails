@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from command import Command
+from Command import Command
 
 class Run(Command):
 
