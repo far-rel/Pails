@@ -3,6 +3,7 @@ import logging
 import argparse
 from argparse import ArgumentParser
 from core.commands import Run
+from core.commands import Routes
 
 log = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ class PailsManager(object):
 	
     def __call__(self):
         argument_config = {
-		    'description' : 'Manager to controll Pails application',
+		    'description' : 'Manager to control Pails application',
 		    'epilog' : 'For more information visit url https://github.com/far-rel/Pails',
 		}
         # general commands
@@ -37,14 +38,15 @@ class PailsManager(object):
 		
     def register(self, action, command_object):
         if action in self._command.keys():
-            log.info('command %s has been ovveriden' % action)
+            log.info('command %s has been overridden' % action)
         self._command[action] = command_object
 		
     @property
-    def avaible(self):
+    def available(self):
         return self._command.keys()
 
 
 manager = PailsManager()
 manager.register('run',Run)
 manager.register('start',Run)
+manager.register('routes', Routes)
