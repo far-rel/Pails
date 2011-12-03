@@ -1,5 +1,7 @@
 # -*- coding: UTF8 -*-
 
+from Pails.exceptions.routes import RoutingDefinitionException
+
 class Route(object):
 
     __route_map = []
@@ -35,7 +37,30 @@ class Route(object):
         Route.__route_map.append(m)
 
     def optimize(self):
-        pass
+        routes = []
+        for route in Route.__route_map:
+            routes.append(route)
+        i = 0
+        to_remove = []
+        to_insert = {}
+        for route in routes:
+            j = 0
+            for other_route in routes:
+                if i != j:
+                    if route[0] == other_route[0] and\
+                       route[1] == other_route[1] and\
+                       route[2] == other_route[2]:
+                        merge = dict(route[3])
+                        merge.update(other_route[3])
+                        if len(merge) != len(route[3]) + len(other_route[3]):
+                            to_remove.append(j)
+                            to_insert[i] = (route[0], route[1], route[2], merge)
+                        else:
+                            pass
+                j += 1
+            i+= 1
+
+
 
     def __iter__(self):
         for item in Route.__route_map:

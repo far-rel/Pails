@@ -2,3 +2,6 @@
 
 class InvalidMethodException(Exception):
     pass
+
+class RoutingDefinitionException(Exception):
+    pass
