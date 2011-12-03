@@ -5,26 +5,30 @@ from ActionSet import ActionSet
 
 class Resources(object):
 
-    def __init__(self, name, without = None, only = None, controller_string = None):
+    def __init__(self, name, without = None, only = None, controller = None, _as = None):
         self.__name = name
         self.__without = without
         self.__only = only
-        if controller_string is None:
-            self.__controller_string = name
+        if controller is None:
+            self.__controller = name
         else:
-            self.__controller_string = controller_string
+            self.__controller = controller
+        if _as is None:
+            self.__as = name
+        else:
+            self.__as = _as
         self.__member = ActionSet()
         self.__collection = ActionSet()
         self.__route_map = []
         
-    def resources(self, name, without = None, only = None, controller_string = None):
-        r = Resources(name, without, only, controller_string)
+    def resources(self, name, without = None, only = None, controller = None, _as = None):
+        r = Resources(name, without, only, controller, _as)
         self.__route_map.append(r)
         return r
         
-    def resource(self, name, without = None, only = None, controller_string = None):
+    def resource(self, name, without = None, only = None, controller = None, _as = None):
         from Resource import Resource
-        r = Resource(name, without, only, controller_string)
+        r = Resource(name, without, only, controller, _as)
         self.__route_map.append(r)
         return r
 
@@ -55,23 +59,23 @@ class Resources(object):
             methods['DELETE'] = 'destroy'
 
         if len(methods) > 0:
-            yield ('{0:>s}/[\D\d]*'.format(self.__name), ['id'], self.__controller_string, methods)
+            yield ('{0:>s}/[\D\d]*'.format(self.__name), ['id'], self.__controller, methods)
         if self.__include('index'):
-            yield (self.__name, [], self.__controller_string, { 'GET' : 'index' })
+            yield (self.__name, [], self.__controller, { 'GET' : 'index' })
         if self.__include('new'):
-            yield ('{0:>s}/new'.format(self.__name), [], self.__controller_string, {'GET' : 'new' })
+            yield ('{0:>s}/new'.format(self.__name), [], self.__controller, {'GET' : 'new' })
         if self.__include('edit'):
-            yield ('{0:>s}/[\D\d]*/edit'.format(self.__name), ['id'], self.__controller_string, {'GET' : 'edit' })
+            yield ('{0:>s}/[\D\d]*/edit'.format(self.__name), ['id'], self.__controller, {'GET' : 'edit' })
         for route, variables, controller, methods in self.__collection:
-            yield ( '{0:>s}/{1:>s}'.format(self.__name, route), variables, self.__controller_string, methods )
+            yield ( '{0:>s}/{1:>s}'.format(self.__name, route), variables, self.__controller, methods )
         for route, variables, controller, methods in self.__member:
             variables.insert(0, 'id')
             yield ( '{0:>s}/[\D\d]*/{1:>s}'.format(self.__name, route),
-                    variables, self.__controller_string, methods )
+                    variables, self.__controller, methods )
         for item in self.__route_map:
             for route, variables, controller, methods in item:
                 var_name = 'id'
                 while var_name in variables:
                     var_name = self.__name + '_' + var_name
                 variables.insert(0, var_name)
-                yield ( '{0:>s}/[\D\d]*/{1:>s}'.format(self.__name, route), variables, controller, methods )
+                yield ( '{0:>s}/[\D\d]*/{1:>s}'.format(self.__as, route), variables, controller, methods )
