@@ -22,5 +22,5 @@ class Match(object):
         expression = re.compile(r':[_a-z]+[_a-z0-9]*')
         matches = re.findall(expression, self.__route)
         variables = [m.replace(':', '') for m in matches]
-        route = re.sub(expression, '[\D\d]+', self.__route)
+        route = re.sub(expression, '[\D\d]*', self.__route)
         yield (route, variables, self.__controller, { self.__method : self.__action } )

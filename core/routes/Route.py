@@ -38,7 +38,7 @@ class Route(object):
 
     def optimize(self):
         routes = []
-        for route in Route.__route_map:
+        for route in self:
             routes.append(route)
         i = 0
         to_remove = []
@@ -46,21 +46,39 @@ class Route(object):
         for route in routes:
             j = 0
             for other_route in routes:
-                if i != j:
+                if i != j and i not in to_remove and j not in to_remove:
                     if route[0] == other_route[0] and\
                        route[1] == other_route[1] and\
                        route[2] == other_route[2]:
-                        merge = dict(route[3])
-                        merge.update(other_route[3])
-                        if len(merge) != len(route[3]) + len(other_route[3]):
+                        first_dict = route[3]
+                        second_dict = other_route[3]
+                        if i in to_insert:
+                            first_dict = to_insert[i][3]
+                        if j in to_insert:
+                            second_dict = to_insert[j][3]
+                        merge = dict(first_dict)
+                        merge.update(second_dict)
+                        if len(merge) == len(first_dict) + len(second_dict):
                             to_remove.append(j)
                             to_insert[i] = (route[0], route[1], route[2], merge)
+                            if j in to_insert:
+                                del to_insert[j]
                         else:
-                            pass
+                            raise RoutingDefinitionException('Method defined twice')
+                    elif route[0] == other_route[0] and\
+                       route[1] == other_route[1] and\
+                       route[2] != other_route[2]:
+                        raise RoutingDefinitionException('Same routes with different controllers')
+                    elif route[0] == other_route[0] and\
+                       route[1] != other_route[1]:
+                        raise RoutingDefinitionException('Same routes with different variables')
                 j += 1
             i+= 1
-
-
+        for insert in to_insert:
+            routes[insert] = to_insert[insert]
+        for remove in to_remove:
+            routes.remove(routes[remove])
+        return routes
 
     def __iter__(self):
         for item in Route.__route_map:
