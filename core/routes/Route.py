@@ -1,6 +1,7 @@
 # -*- coding: UTF8 -*-
 
 from Pails.exceptions.routes import RoutingDefinitionException
+from UrlHelper import UrlHelper
 
 class Route(object):
 
@@ -78,7 +79,10 @@ class Route(object):
             routes[insert] = to_insert[insert]
         for remove in to_remove:
             routes.remove(routes[remove])
-        return routes
+        helper = UrlHelper()
+        for route in routes:
+            helper.append(route[0])
+        return (routes, helper)
 
     def __iter__(self):
         for item in Route.__route_map:
