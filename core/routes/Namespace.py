@@ -24,6 +24,6 @@ class Namespace(object):
 
     def __iter__(self):
         for item in self.__route_map:
-            for route, variables, controller, methods in item:
+            for route, variables, controller, methods, name in item:
                 yield ('{0:>s}/{1:>s}'.format(self.__as, route), variables,
-                       '{0:>s}/{1:>s}'.format(self.__as, controller), methods)
+                       '{0:>s}/{1:>s}'.format(self.__as, controller), methods, '{0:>s}_{1:>s}'.format(self.__name, name))

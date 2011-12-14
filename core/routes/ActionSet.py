@@ -47,4 +47,4 @@ class ActionSet(object):
 
     def __iter__(self):
         for action in self.__actions:
-            yield ( action['as'], [], '', { action['method'] : action['name'] } )
+            yield ( action['as'], [], '', { action['method'] : action['name'] }, action['name'] )

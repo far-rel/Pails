@@ -52,15 +52,17 @@ class Resource(object):
         if self.__include('destroy'):
             methods['DELETE'] = 'destroy'
         if len(methods) > 0:
-            yield (self.__name, [], self.__controller, methods)
+            yield (self.__as, [], self.__controller, methods, self.__name)
         if self.__include('edit'):
-            yield ('{0:>s}/edit'.format(self.__name), [], self.__controller, {'GET' : 'edit' })
+            yield ('{0:>s}/edit'.format(self.__as), [], self.__controller, {'GET' : 'edit' }, '{0:>s}_edit'.format(self.__name))
         if self.__include('new'):
-            yield ('{0:>s}/new'.format(self.__name), [], self.__controller, {'GET' : 'new' })
+            yield ('{0:>s}/new'.format(self.__as), [], self.__controller, {'GET' : 'new' }, '{0:>s}_new'.format(self.__name))
         for item in self.__member:
-            for route, variables, controller, methods in item:
-                yield ( '{0:>s}/{1:>s}'.format(self.__as, route), variables, self.__controller, methods )
+            for route, variables, controller, methods, name in item:
+                yield ( '{0:>s}/{1:>s}'.format(self.__as, route), variables,
+                        self.__controller, methods, '{0:>s}_{1:>s}'.format(self.__name, name) )
         for item in self.__route_map:
-            for route, variables, controller, methods in item:
-                yield ( '{0:>s}/{1:>s}'.format(self.__as, route), variables, controller, methods )
+            for route, variables, controller, methods, name in item:
+                yield ( '{0:>s}/{1:>s}'.format(self.__as, route), variables,
+                        controller, methods, '{0:>s}_{1:>s}'.format(self.__name, name) )
 

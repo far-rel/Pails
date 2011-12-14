@@ -59,23 +59,29 @@ class Resources(object):
             methods['DELETE'] = 'destroy'
 
         if len(methods) > 0:
-            yield ('{0:>s}/[\D\d]*'.format(self.__name), ['id'], self.__controller, methods)
+            yield ('{0:>s}/[\D\d]*'.format(self.__as), ['id'],
+                   self.__controller, methods, self.__name)
         if self.__include('index'):
-            yield (self.__name, [], self.__controller, { 'GET' : 'index' })
+            yield (self.__as, [], self.__controller, { 'GET' : 'index' },
+                   '{0:>s}s'.format(self.__name))
         if self.__include('new'):
-            yield ('{0:>s}/new'.format(self.__name), [], self.__controller, {'GET' : 'new' })
+            yield ('{0:>s}/new'.format(self.__as), [], self.__controller,
+                       {'GET' : 'new' }, '{0:>s}_new'.format(self.__name))
         if self.__include('edit'):
-            yield ('{0:>s}/[\D\d]*/edit'.format(self.__name), ['id'], self.__controller, {'GET' : 'edit' })
-        for route, variables, controller, methods in self.__collection:
-            yield ( '{0:>s}/{1:>s}'.format(self.__name, route), variables, self.__controller, methods )
-        for route, variables, controller, methods in self.__member:
+            yield ('{0:>s}/[\D\d]*/edit'.format(self.__as), ['id'], self.__controller,
+                       {'GET' : 'edit' }, '{0:>s}_edit'.format(self.__name))
+        for route, variables, controller, methods, name in self.__collection:
+            yield ( '{0:>s}/{1:>s}'.format(self.__name, route), variables, self.__controller,
+                    methods, '{0:>s}s_{1:>s}'.format(self.__name, name) )
+        for route, variables, controller, methods, name in self.__member:
             variables.insert(0, 'id')
-            yield ( '{0:>s}/[\D\d]*/{1:>s}'.format(self.__name, route),
-                    variables, self.__controller, methods )
+            yield ( '{0:>s}/[\D\d]*/{1:>s}'.format(self.__as, route),
+                    variables, self.__controller, methods, '{0:>s}_{1:>s}'.format(self.__name, name) )
         for item in self.__route_map:
-            for route, variables, controller, methods in item:
+            for route, variables, controller, methods, name in item:
                 var_name = 'id'
                 while var_name in variables:
                     var_name = self.__name + '_' + var_name
                 variables.insert(0, var_name)
-                yield ( '{0:>s}/[\D\d]*/{1:>s}'.format(self.__as, route), variables, controller, methods )
+                yield ( '{0:>s}/[\D\d]*/{1:>s}'.format(self.__as, route), variables, controller,
+                        methods, '{0:>s}_{1:>s}'.format(self.__name, name) )

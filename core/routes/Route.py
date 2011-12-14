@@ -34,7 +34,7 @@ class Route(object):
 
     def root(self, controller, action):
         from Match import Match
-        m = Match('', controller, action, 'GET')
+        m = Match('', controller, action, 'GET', name = 'root')
         Route.__route_map.append(m)
 
     def optimize(self):
@@ -61,7 +61,7 @@ class Route(object):
                         merge.update(second_dict)
                         if len(merge) == len(first_dict) + len(second_dict):
                             to_remove.append(j)
-                            to_insert[i] = (route[0], route[1], route[2], merge)
+                            to_insert[i] = (route[0], route[1], route[2], merge, route[4])
                             if j in to_insert:
                                 del to_insert[j]
                         else:
@@ -80,12 +80,14 @@ class Route(object):
         for remove in to_remove:
             routes.remove(routes[remove])
         helper = UrlHelper()
+
         for route in routes:
-            helper.append(route[0])
+            if route[4] is not None:
+                helper.append(route[4], route[0])
         return (routes, helper)
 
     def __iter__(self):
         for item in Route.__route_map:
-            for route, variables, controller, methods in item:
+            for route, variables, controller, methods, name in item:
                 variables.append('format')
-                yield ('/{0:>s}(.[a-z0-9]+)?'.format(route), variables, controller, methods)
+                yield ('/{0:>s}(.[a-z0-9]+)?'.format(route), variables, controller, methods, name)

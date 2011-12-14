@@ -23,4 +23,4 @@ class Match(object):
         matches = re.findall(expression, self.__route)
         variables = [m.replace(':', '') for m in matches]
         route = re.sub(expression, '[\D\d]*', self.__route)
-        yield (route, variables, self.__controller, { self.__method : self.__action } )
+        yield (route, variables, self.__controller, { self.__method : self.__action }, self.__name )
