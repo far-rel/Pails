@@ -1,5 +1,6 @@
 # -*- coding: UTF8 -*-
 from Command import Command
+import sys
 
 class Routes(Command):
 
@@ -7,12 +8,14 @@ class Routes(Command):
         Command.__init__(self, config, **params)
 
     def __call__(self):
-        import project.config.routes #This needs to be replaced by import projects routes file to setup route maps
+        sys.path.append(self._config.project_path)
+        import app.routing
         from Pails.core.routes import Route
-        for (route, variables, controller, methods, name) in Route():
+        for (route, variables, controller, methods, name) in Route().optimize()[0]:
             for method in methods:
                 print "Address => %s Controller => %s Method => %s Action => %s Name => %s" % (route, controller, method, methods[method], name)
 
     @staticmethod
     def parser(subparser):
-        pass
+        parser = subparser.add_parser('routes', help='Show current routes')
+        return parser
