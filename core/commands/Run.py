@@ -40,10 +40,13 @@ class Run(Command):
 
     def __get_controller(self, name):
         name = name.replace('/', '.')
-        real_name = name.split('.')[-1].capitalize()
-        #return __import__('UserController', fromlist='app.controllers.user_controller')
-        return __import__("app.controllers.{0:>s}_controller".format(name)).\
-            __dict__['controllers'].\
-            __dict__['user_controller'].\
-            __dict__['UserController']
-        #return __import__("app.controllers.{0:>s}_controller.{1:>s}Controller".format(name, real_name))
+        controller_class = __import__('app.controllers.{0:>s}_controller'.format(name)).__dict__['controllers']
+        i = 0
+        subnames = name.split('.')
+        for subname in subnames:
+            if i == len(subnames) - 1:
+                controller_class = controller_class.__dict__['{0:>s}_controller'.format(subname)].__dict__['{0:>s}Controller'.format(subname.capitalize())]
+            else:
+                controller_class = controller_class.__dict__[subname]
+            i+=1
+        return controller_class
