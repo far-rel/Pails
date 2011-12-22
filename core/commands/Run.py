@@ -2,7 +2,7 @@
 import sys
 from Command import Command
 from tornado.ioloop import IOLoop
-from tornado.web import Application
+from tornado.web import Application, StaticFileHandler
 from Pails.core.handlers import BaseHandler
 
 class Run(Command):
@@ -17,6 +17,7 @@ class Run(Command):
         routing = Route().optimize()
         path_helper = routing[1]
         routes = []
+        routes.append(('/public/(.*)', StaticFileHandler, {'path' : self._config.project_path + '/' + 'public/'}))
         for (route, variables, controller, methods, name) in routing[0]:
             params = {
                 'controller': self.__get_controller(controller),
