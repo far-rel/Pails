@@ -14,28 +14,28 @@ class BaseHandler(RequestHandler):
         self.__env = Environment(loader = FileSystemLoader(project_path + '/app/views'))
     
     def get(self, *args):
+        self.process_request('GET', args)
+
+    def post(self, *args):
+        self.process_request('POST', args)
+
+    def put(self, *args):
+        self.process_request('PUT', args)
+
+    def delete(self, *args):
+        self.process_request('DELETE', args)
+
+    def process_request(self, method, args):
         params = self.__parse_arguments(self.request.arguments, self.request.files)
         params.update(dict(zip(self.__param_names, args)))
         if params['format'] is None:
             params['format'] = 'html'
         controller = self.__controller()
         controller.set_parameters(params)
-        controller.__getattribute__(self.__methods['GET'])()
-        temp = self.__env.get_template(self.__name + '/' + self.__methods['GET'] + '.html')
+        controller.__getattribute__(self.__methods[method])()
+        temp = self.__env.get_template(self.__name + '/' + self.__methods[method] + '.html')
         self.write(temp.render(controller.get_render_parameters()))
-
-    def post(self, *args):
-        params = dict(zip(self.__param_names, args))
-        self.__controller().__getattribute__(self.__methods['PUT'])()
-
-    def put(self, *args):
-        params = dict(zip(self.__param_names, args))
-        self.__controller().__getattribute__(self.__methods['PUT'])()
-
-    def delete(self, *args):
-        params = dict(zip(self.__param_names, args))
-        self.__controller().__getattribute__(self.__methods['DELETE'])()
-
+        
     def __parse_arguments(self, arguments, files):
         params = {}
         for name in arguments:
