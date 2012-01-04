@@ -24,7 +24,8 @@ class Run(Command):
                 'methods': methods,
                 'param_names': variables,
                 'name' : controller,
-                'project_path' : self._config.project_path
+                'project_path' : self._config.project_path,
+                'url_helper' : routing[1]
             }
             routes.append((route, BaseHandler, params))
         settings = {}

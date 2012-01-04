@@ -6,12 +6,13 @@ from tornado.web import RequestHandler
 
 class BaseHandler(RequestHandler):
 
-    def initialize(self, controller, methods, param_names, name, project_path):
+    def initialize(self, controller, methods, param_names, name, project_path, url_helper):
         self.__controller = controller
         self.__methods = methods
         self.__param_names = param_names
         self.__name = name
         self.__env = Environment(loader = FileSystemLoader(project_path + '/app/views'))
+        self.__url_helper = url_helper
     
     def get(self, *args):
         self.process_request('GET', args)
@@ -32,9 +33,21 @@ class BaseHandler(RequestHandler):
             params['format'] = 'html'
         controller = self.__controller()
         controller.set_parameters(params)
+        controller.set_path(self.__url_helper)
         controller.__getattribute__(self.__methods[method])()
-        temp = self.__env.get_template(self.__name + '/' + self.__methods[method] + '.html')
-        self.write(temp.render(controller.get_render_parameters()))
+        redirect_address = controller.get_redirect()
+        if not redirect_address is None:
+            self.redirect(redirect_address)
+        else:
+            view = controller.get_view()
+            render_params = controller.get_render_parameters()
+            render_params.update({ 'path' : self.__url_helper })
+            if view is None:
+                view = self.__name + '/' + self.__methods[method]
+            elif view.find('/') == -1:
+                view = self.__name + '/' + view
+            temp = self.__env.get_template(view + '.' + params['format'])
+            self.write(temp.render(render_params))
         
     def __parse_arguments(self, arguments, files):
         params = {}

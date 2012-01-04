@@ -90,4 +90,4 @@ class Route(object):
         for item in Route.__route_map:
             for route, variables, controller, methods, name in item:
                 variables.append('format')
-                yield ('/{0:>s}(.[a-z0-9]+)?'.format(route), variables, controller, methods, name)
+                yield ('/{0:>s}(\.[a-z0-9]+)?'.format(route), variables, controller, methods, name)

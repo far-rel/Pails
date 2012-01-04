@@ -30,6 +30,6 @@ class UrlHelper(object):
         return name_to_url
 
     def __url_to_formatted_url(self, url):
-        return url.replace('[\D\d]*', ':param').replace('(.[a-z0-9]+)?', ':format')
+        return url.replace('[\D\d]*', ':param').replace('(\.[a-z0-9]+)?', ':format')
 
     
