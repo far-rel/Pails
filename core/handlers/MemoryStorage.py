@@ -7,7 +7,7 @@ class MemoryStorage(object):
 
     def get(self, key, handler):
         session_id = handler.get_secure_cookie('_session_id')
-        if session_id:
+        if session_id and session_id in MemoryStorage.storage and key in MemoryStorage.storage[session_id]:
             return MemoryStorage.storage[session_id][key]
         else:
             return None

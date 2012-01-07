@@ -1,6 +1,7 @@
 # -*- coding: UTF8 -*-
 
 from CookieStorage import CookieStorage
+from MemoryStorage import MemoryStorage
 
 class Session(object):
 
@@ -21,3 +22,4 @@ class Session(object):
         self.__storage.store(key, value, self.__handler)
 
 Session.register('cookie', CookieStorage)
+Session.register('memory', MemoryStorage)

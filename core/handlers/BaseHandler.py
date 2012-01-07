@@ -4,6 +4,7 @@ from jinja2.exceptions import TemplateNotFound
 from jinja2.loaders import FileSystemLoader
 from CookieSet import CookieSet
 from tornado.web import RequestHandler
+from Session import Session
 
 class BaseHandler(RequestHandler):
 
@@ -37,6 +38,7 @@ class BaseHandler(RequestHandler):
         controller.set_parameters(params)
         controller.set_path(self.__url_helper)
         controller.cookies = CookieSet(self)
+        controller.session = Session(self)
         controller.__getattribute__(self.__methods[method])()
         redirect_address = controller.get_redirect()
         if not redirect_address is None:
