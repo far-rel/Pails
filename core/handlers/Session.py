@@ -21,5 +21,8 @@ class Session(object):
     def __setitem__(self, key, value):
         self.__storage.store(key, value, self.__handler)
 
+    def __delitem__(self, key):
+        self.__storage.remove(key, self.__handler)
+
 Session.register('cookie', CookieStorage)
 Session.register('memory', MemoryStorage)

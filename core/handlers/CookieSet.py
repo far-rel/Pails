@@ -10,3 +10,6 @@ class CookieSet(object):
 
     def __setitem__(self, key, value):
         self.__handler.set_secure_cookie(key, value)
+
+    def __delitem__(self, key):
+        self.__handler.clear_cookie(key)
