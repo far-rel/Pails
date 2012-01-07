@@ -6,7 +6,7 @@ class CookieStorage(object):
         pass
 
     def get(self, key, handler):
-        pass
+        return handler.get_secure_cookie('_session_{0:>s}'.format(key))
 
     def store(self, key, value, handler):
-        pass
+        handler.set_secure_cookie('_session_{0:>s}'.format(key), str(value))

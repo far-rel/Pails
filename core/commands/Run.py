@@ -17,7 +17,8 @@ class Run(Command):
         routing = Route().optimize()
         path_helper = routing[1]
         routes = []
-        routes.append(('/public/(.*)', StaticFileHandler, {'path' : self._config.project_path + '/' + 'public/'}))
+        if self._config.serve_static:
+            routes.append(('/public/(.*)', StaticFileHandler, {'path' : self._config.project_path + '/' + 'public/'}))
         for (route, variables, controller, methods, name) in routing[0]:
             params = {
                 'controller': self.__get_controller(controller),
@@ -29,10 +30,10 @@ class Run(Command):
             }
             routes.append((route, BaseHandler, params))
         settings = {
-            'cookie_secret' : 'oko'
+            'cookie_secret' : self._config.cookie_secret
         }
         app = Application(routes, **settings)
-        app.listen(8888)
+        app.listen(self._config.port)
         IOLoop.instance().start()
         print 'running server'
 
