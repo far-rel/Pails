@@ -28,7 +28,9 @@ class Run(Command):
                 'url_helper' : routing[1]
             }
             routes.append((route, BaseHandler, params))
-        settings = {}
+        settings = {
+            'cookie_secret' : 'oko'
+        }
         app = Application(routes, **settings)
         app.listen(8888)
         IOLoop.instance().start()

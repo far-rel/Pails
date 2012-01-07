@@ -1,7 +1,7 @@
 # -*- coding: UTF8 -*-
 from jinja2.environment import Environment
 from jinja2.loaders import FileSystemLoader
-
+from CookieSet import CookieSet
 from tornado.web import RequestHandler
 
 class BaseHandler(RequestHandler):
@@ -30,10 +30,11 @@ class BaseHandler(RequestHandler):
         params = self.__parse_arguments(self.request.arguments, self.request.files)
         params.update(dict(zip(self.__param_names, args)))
         if params['format'] is None:
-            params['format'] = 'html'
+            params['format'] = '.html'
         controller = self.__controller()
         controller.set_parameters(params)
         controller.set_path(self.__url_helper)
+        controller.cookies = CookieSet(self)
         controller.__getattribute__(self.__methods[method])()
         redirect_address = controller.get_redirect()
         if not redirect_address is None:
@@ -46,7 +47,7 @@ class BaseHandler(RequestHandler):
                 view = self.__name + '/' + self.__methods[method]
             elif view.find('/') == -1:
                 view = self.__name + '/' + view
-            temp = self.__env.get_template(view + '.' + params['format'])
+            temp = self.__env.get_template(view + params['format'])
             self.write(temp.render(render_params))
         
     def __parse_arguments(self, arguments, files):
