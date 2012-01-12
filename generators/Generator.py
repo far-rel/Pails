@@ -1,6 +1,7 @@
 # -*- coding: UTF8 -*-
 
 from ModelGenerator import ModelGenerator
+from EmptyGenerator import EmptyGenerator
 
 class Generator(object):
 
@@ -17,3 +18,4 @@ class Generator(object):
         return self.__instance.generate(name, args)
 
 Generator.register('default', 'model', ModelGenerator)
+Generator.register('default', 'empty', EmptyGenerator)
