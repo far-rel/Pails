@@ -4,8 +4,6 @@ import argparse
 from argparse import ArgumentParser
 from core.commands import Run
 from core.commands import Routes
-from core.config import SettingsParser
-import os, sys
 
 log = logging.getLogger(__name__)
 

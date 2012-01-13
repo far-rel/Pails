@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from SettingsParser import SettingsParser
-import sys, os
 
 class Settings(object):
     __obj = None
