@@ -4,11 +4,13 @@ from Command import Command
 from tornado.ioloop import IOLoop
 from tornado.web import Application, StaticFileHandler
 from Pails.core.handlers import BaseHandler
+from Pails.core.config.Settings import Settings
 
 class Run(Command):
 
     def __init__(self, config, **params):
         Command.__init__(self, config, **params)
+        self._config = Settings(config)
 
     def __call__(self):
         sys.path.append(self._config.project_path)

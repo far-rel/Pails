@@ -2,12 +2,12 @@
 
 class Command(object):
 
-    def __init__(self, config, **params):
+    def __init__(self, config,**params):
         '''
             This method may configure command object, call method not take parameters
         '''
-        self._config = config
-
+        pass
+    
     def __call__(self):
         '''
             This method implement executing of command

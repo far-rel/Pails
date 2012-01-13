@@ -1,11 +1,13 @@
 # -*- coding: UTF8 -*-
 from Command import Command
 import sys
+from Pails.core.config.Settings import Settings
 
 class Routes(Command):
 
     def __init__(self, config, **params):
         Command.__init__(self, config, **params)
+        self._config = Settings(config)
 
     def __call__(self):
         sys.path.append(self._config.project_path)
