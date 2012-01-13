@@ -10,4 +10,4 @@ def name_to_table_name(name):
 
 def pluralize(name):
     p = inflect.engine()
-    return p.prular(name)
+    return p.plural(name)
