@@ -2,6 +2,10 @@
 
 from ModelGenerator import ModelGenerator
 from EmptyGenerator import EmptyGenerator
+from LayoutGenerator import LayoutGenerator
+from ManageGenerator import ManageGenerator
+from RoutingGenerator import RoutingGenerator
+from ConfigGenerator import ConfigGenerator
 
 class Generator(object):
 
@@ -19,3 +23,7 @@ class Generator(object):
 
 Generator.register('default', 'model', ModelGenerator)
 Generator.register('default', 'empty', EmptyGenerator)
+Generator.register('default', 'layout', LayoutGenerator)
+Generator.register('default', 'config', ConfigGenerator)
+Generator.register('default', 'manage', ManageGenerator)
+Generator.register('default', 'routing', RoutingGenerator)

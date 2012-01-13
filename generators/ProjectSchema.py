@@ -1,12 +1,10 @@
 # -*- coding: UTF8 -*-
 
-from Schema import Schema
-
-class ProjectSchema(Schema):
+class ProjectSchema(object):
 
     def __init__(self):
         self.file_schema = {
-            '$name' : {
+            '{0:>s}' : {
                 'app' : {
                     'controllers' : {
                         '__init__.py' : 'empty'
@@ -32,6 +30,9 @@ class ProjectSchema(Schema):
                     'development.ini' : 'config',
                     'production.ini' : 'config'
                 },
+                'libs' : {
+
+                },
                 'public' : {
                     'images' : {
                     },
@@ -39,8 +40,8 @@ class ProjectSchema(Schema):
                     },
                     'stylesheets' : {
                     },
-                    'manage.py' : 'manage'
-                }
+                },
+                'manage.py' : 'manage'
             }
         }
   
