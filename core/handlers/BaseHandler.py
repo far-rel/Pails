@@ -5,16 +5,17 @@ from jinja2.loaders import FileSystemLoader
 from CookieSet import CookieSet
 from tornado.web import RequestHandler
 from Session import Session
+from Pails.core.config.Settings import Settings
 
 class BaseHandler(RequestHandler):
 
-    def initialize(self, controller, methods, param_names, name, project_path, url_helper):
+    def initialize(self, controller, methods, param_names, name, url_helper):
         self.__controller = controller
         self.__methods = methods
         self.__param_names = param_names
         self.__name = name
-        self.__project_path = project_path
-        self.__env = Environment(loader = FileSystemLoader(project_path + '/app/views'))
+        self.__project_path = Settings().project_path
+        self.__env = Environment(loader = FileSystemLoader(self.__project_path + '/app/views'))
         self.__url_helper = url_helper
     
     def get(self, *args):

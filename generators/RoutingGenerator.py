@@ -3,5 +3,8 @@
 class RoutingGenerator(object):
 
     def generate(self, name, *args):
-        return ''
+        string = "# -*- coding: UTF8 -*-\n\n"
+        string += "from Pails.core.routes import Route\n\n"
+        string += "r = Route()"
+        return string
   

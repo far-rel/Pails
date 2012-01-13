@@ -1,10 +1,11 @@
 # -*- coding: UTF8 -*-
 
+from Pails.core.config.Settings import Settings
 from sqlalchemy.engine import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import create_session
 
-engine = create_engine('')
+engine = create_engine(Settings().database_connection)
 Base = declarative_base(bind=engine)
 session = create_session()
 

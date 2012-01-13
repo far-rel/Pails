@@ -17,7 +17,6 @@ class Run(Command):
         import app.routing
         from Pails.core.routes.Route import Route
         routing = Route().optimize()
-        path_helper = routing[1]
         routes = []
         if self._config.serve_static:
             routes.append(('/public/(.*)', StaticFileHandler, {'path' : self._config.project_path + '/' + 'public/'}))
@@ -27,7 +26,6 @@ class Run(Command):
                 'methods': methods,
                 'param_names': variables,
                 'name' : controller,
-                'project_path' : self._config.project_path,
                 'url_helper' : routing[1]
             }
             routes.append((route, BaseHandler, params))

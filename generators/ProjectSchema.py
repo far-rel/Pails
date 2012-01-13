@@ -21,7 +21,8 @@ class ProjectSchema(object):
                             'application.html' : 'layout'
                         }
                     },
-                    'routing.py' : 'routing'
+                    'routing.py' : 'routing',
+                    '__init__.py' : 'empty'
                 },
                 'commands' : {
                     '__init__.py' : 'empty'
