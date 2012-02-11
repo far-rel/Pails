@@ -8,7 +8,6 @@ class Generate(Command):
 
     def __init__(self, config, **params):
         Command.__init__(self, config, **params)
-        print params
         self._config = Settings(config)
         self.params = params
 

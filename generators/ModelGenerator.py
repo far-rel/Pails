@@ -1,6 +1,6 @@
 # -*- coding: UTF8 -*-
 
-from Pails.utils.NameUtils import name_to_class, name_to_table_name, pluralize
+from Pails.utils.NameUtils import name_to_class, name_to_table_name, pluralize, convert
 
 class ModelGenerator(object):
 
@@ -15,7 +15,7 @@ class ModelGenerator(object):
         string += '{0:>s}id = Column(Integer, primary_key = True)\n'.format(indent)
         for arg in args:
             arg_splited = arg.split(':')
-            column = arg_splited[0]
+            column = convert(arg_splited[0])
             column_type = arg_splited[1]
             string += '{0:>s}{1:>s} = Column({2:>s})\n'.format(indent, column, column_type)
         return string

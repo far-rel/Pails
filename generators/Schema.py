@@ -3,7 +3,7 @@ import os
 from Generator import Generator
 from ProjectSchema import ProjectSchema
 from ModelSchema import ModelSchema
-from Pails.utils.NameUtils import *
+from Pails.utils.NameUtils import pluralize, convert
 
 class Schema(object):
 
@@ -21,8 +21,9 @@ class Schema(object):
         self.gen(self.__instance.file_schema, dir, name, *args)
 
     def gen(self, file_schema, dir, name, *args):
+        name = convert(name)
+        plural = pluralize(name)
         for key in file_schema:
-            plural = pluralize(name)
             if isinstance(file_schema[key], dict):
                 new_dir = os.path.join(dir, key.format(name, plural))
                 try:
