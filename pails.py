@@ -6,8 +6,11 @@ from generators.Schema import Schema
 
 if __name__ == '__main__':
     cwd = os.getcwd()
-    project_name = sys.argv[1]
-    if not os.path.exists(os.path.join(cwd, project_name)):
-        Schema('default', 'project').generate(cwd, project_name)
+    if len(sys.argv) > 1:
+        project_name = sys.argv[1]
+        if not os.path.exists(os.path.join(cwd, project_name)):
+            Schema('default', 'project').generate(cwd, project_name)
+        else:
+            print "Couldn't initialize new project. Directory taken"
     else:
-        print "Couldn't initialize new project. Directory taken"
+        print "Project name not specified"

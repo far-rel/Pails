@@ -2,7 +2,8 @@
 import os
 from Generator import Generator
 from ProjectSchema import ProjectSchema
-from utils.NameUtils import *
+from ModelSchema import ModelSchema
+from Pails.utils.NameUtils import *
 
 class Schema(object):
 
@@ -44,3 +45,4 @@ class Schema(object):
         pass
 
 Schema.register('default', 'project', ProjectSchema)
+Schema.register('default', 'model', ModelSchema)

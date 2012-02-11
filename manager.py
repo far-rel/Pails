@@ -4,6 +4,7 @@ import argparse
 from argparse import ArgumentParser
 from core.commands import Run
 from core.commands import Routes
+from core.commands import Generate
 
 log = logging.getLogger(__name__)
 
@@ -50,3 +51,4 @@ class PailsManager(object):
 manager = PailsManager()
 manager.register('run',Run)
 manager.register('routes', Routes)
+manager.register('generate', Generate)
